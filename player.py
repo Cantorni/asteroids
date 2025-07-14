@@ -7,7 +7,7 @@ class Player(c.CircleShape):
     def __init__(self,x,y):
         super().__init__(x,y,constants.PLAYER_RADIUS)
         self.rotation = 0
-        timer = 0
+        self.timer = 0
 
     def triangle(self):
         forward = p.Vector2(0, 1).rotate(self.rotation)
@@ -21,6 +21,7 @@ class Player(c.CircleShape):
         p.draw.polygon(screen,(255,255,255),self.triangle(),2)
     
     def update(self, dt):
+        self.timer -= dt
         keys = p.key.get_pressed()
 
         if keys[p.K_w]:
@@ -43,8 +44,11 @@ class Player(c.CircleShape):
         self.position += forward * constants.PLAYER_SPEED * dt
 
     def shoot(self,dt):
-        shot = Shot(self.position.x,self.position.y,constants.SHOT_RADIUS)
-        shot.velocity = p.Vector2(0, 1)
-        shot.velocity.rotate(self.rotation)
-        forward = p.Vector2(0, 1).rotate(self.rotation)
-        shot.velocity = forward * constants.PLAYER_SHOOT_SPEED
+        
+        if self.timer <= 0:
+            shot = Shot(self.position.x,self.position.y,constants.SHOT_RADIUS)
+            shot.velocity = p.Vector2(0, 1)
+            shot.velocity.rotate(self.rotation)
+            forward = p.Vector2(0, 1).rotate(self.rotation)
+            shot.velocity = forward * constants.PLAYER_SHOOT_SPEED
+            self.timer = constants.PLAYER_SHOOT_COOLDOWN
