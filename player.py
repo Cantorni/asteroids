@@ -23,15 +23,16 @@ class Player(c.CircleShape):
     def update(self, dt):
         self.timer -= dt
         keys = p.key.get_pressed()
-
-        if keys[p.K_w]:
+        
+        
+        if keys[p.K_w] or keys[p.K_UP]:
             self.move(dt)
-        if keys[p.K_s]:
+        if keys[p.K_s] or keys[p.K_DOWN]:
             self.move(dt*-1)
 
-        if keys[p.K_a]:
+        if keys[p.K_a] or keys[p.K_RIGHT]:
             self.rotate(dt)
-        if keys[p.K_d]:
+        if keys[p.K_d] or keys[p.K_LEFT]:
             self.rotate(dt*-1)
         if keys[p.K_SPACE]:
             self.shoot(dt)
